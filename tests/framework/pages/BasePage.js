@@ -2,8 +2,6 @@ import config from "../config";
 
 const { baseUrl } = config;
 
-console.log(baseUrl);
-
 export class BasePage {
     constructor(page) {
         this.page = page;

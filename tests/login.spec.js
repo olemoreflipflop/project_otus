@@ -8,12 +8,8 @@ import { Severity } from "./framework/helpers/enums";
 
 const { login, password } = config;
 
-test.describe('', () => {
+test.describe('User Log in', () => {
   let basePage, loginModal;
-
-  test.afterEach(async ({ page }, testInfo) => {
-    await page.close();
-  })
 
   test.beforeEach(async ({ page }) => {
     allure.epic("User Log in");
@@ -25,20 +21,24 @@ test.describe('', () => {
     await basePage.openLoginModal();
   });
 
-  test.only('should allow me to log in', async ({ page }) => {
+  test.afterEach(async ({ page }) => {
+    await page.close();
+  })
+
+  test('should allow me to log in', async ({ page }) => {
     allure.severity(Severity.Blocker);
 
-    // test.step('Fill the form and submit', async () => {
     await loginModal.fillLoginModal(login, password);
     await loginModal.clickModalButtonByLabel('Log in');
+
     await page.waitForSelector(basePage.userNavLink);
-    // })
-    // test.step('Check that user logged in', async () => {
+
     await expect(page.locator(basePage.userNavLink)).toHaveText(`Welcome ${login}`);
     await expect(page.locator(basePage.loginNavLink)).toBeHidden();
-    // })
+
   });
 
+  // Failed on purpose
   test('should not log in - form not submitted', async ({ page }) => {
     await loginModal.fillLoginModal(login, password);
     await loginModal.clickModalButtonByLabel('Close.');

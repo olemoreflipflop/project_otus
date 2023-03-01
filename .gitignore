@@ -1,11 +1,6 @@
 node_modules
-package*.json
-/test-results/
-/playwright-report/
-/playwright/.cache/
-/allure-*
-/test-results/
-/playwright-report/
+/*-results/
+/*-report/
 /playwright/.cache/
 .env*
 results.xml
