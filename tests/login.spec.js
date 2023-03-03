@@ -3,7 +3,7 @@ import { allure } from "allure-playwright";
 import test from './framework/fixtures/baseFixture';
 import config from "./framework/config";
 import Severity from "./framework/helpers/enums";
-import LogInModal from './framework/elements/LogInModal1';
+import LogInModal from './framework/elements/LogInModal';
 
 const { userName, password } = config;
 let logInModal;
