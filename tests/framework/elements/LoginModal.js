@@ -1,4 +1,4 @@
-export class LogInModal {
+class LogInModal {
     constructor(page) {
         this.page = page;
         this.modal = '#logInModal';
@@ -19,3 +19,4 @@ export class LogInModal {
         await this.page.locator(this.modal).locator(`button:text-is("Close")`).click();
     };
 }
+export default LogInModal

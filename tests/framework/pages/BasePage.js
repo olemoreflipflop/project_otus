@@ -1,7 +1,7 @@
 import config from "../config";
 const { baseUrl } = config;
 
-export class BasePage {
+class BasePage {
     constructor(page) {
         this.page = page;
         this.logInNavLink = '#login2';
@@ -38,3 +38,5 @@ export class BasePage {
     };
 
 }
+
+export default BasePage
