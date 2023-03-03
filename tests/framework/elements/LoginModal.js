@@ -1,4 +1,5 @@
 class LogInModal {
+    
     constructor(page) {
         this.page = page;
         this.modal = '#logInModal';
