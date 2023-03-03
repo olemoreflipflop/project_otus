@@ -3,7 +3,7 @@ import { allure } from "allure-playwright";
 import test from './framework/fixtures/baseFixture';
 import config from "./framework/config";
 import Severity from "./framework/helpers/enums";
-import LoginModal from './framework/elements/LoginModal';
+import LogInModal from './framework/elements/LogInModal1';
 
 const { userName, password } = config;
 let logInModal;
@@ -14,7 +14,7 @@ test.describe('User Log in', () => {
     allure.epic("User Log in");
 
     await basePage.openLogInForm();
-    logInModal = new LoginModal(basePage.page);
+    logInModal = new LogInModal(basePage.page);
   });
 
   test('should allow me to log in', async ({ basePage }) => {

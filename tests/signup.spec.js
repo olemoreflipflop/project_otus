@@ -1,11 +1,10 @@
 import { expect } from '@playwright/test';
-import { page, wai } from 'playwright'
-import test from './framework/fixtures/baseFixture';
 import { allure } from "allure-playwright";
 import config from "./framework/config";
-import { Severity } from "./framework/helpers/enums";
+import Severity from "./framework/helpers/enums";
+import test from './framework/fixtures/baseFixture';
+import SignUpModal from './framework/elements/SignUpModal';
 import { createUserData } from "./framework/helpers/generators"
-import { SignUpModal } from './framework/elements/SignUpModal';
 
 const { userName, password } = config;
 

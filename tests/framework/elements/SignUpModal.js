@@ -1,4 +1,4 @@
-export class SignUpModal {
+class SignUpModal {
     constructor(page) {
         this.page = page;
         this.modal = '#signInModal';
@@ -19,3 +19,5 @@ export class SignUpModal {
         await this.page.locator(this.modal).locator(`button:text-is("Close")`).click();
     };
 }
+
+export default SignUpModal
