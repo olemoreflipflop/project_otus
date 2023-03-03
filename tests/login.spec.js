@@ -1,91 +1,121 @@
-const { test, expect } = require('@playwright/test');
-const { BasePage } = require('./framework/pages/BasePage');
-const { LoginModal } = require('./framework/elements/LoginModal');
+import { expect } from '@playwright/test';
+import test from './framework/fixtures/baseFixture';
+import { LogInModal } from './framework/elements/LogInModal';
 import { allure } from "allure-playwright";
-
 import config from "./framework/config";
 import { Severity } from "./framework/helpers/enums";
 
-const { login, password } = config;
+const { userName, password } = config;
+let logInModal;
 
 test.describe('User Log in', () => {
-  let basePage, loginModal;
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ basePage }) => {
     allure.epic("User Log in");
 
-    basePage = new BasePage(page);
-    loginModal = new LoginModal(page);
-
-    await basePage.navigate();
-    await basePage.openLoginModal();
+    await basePage.openLogInForm();
+    logInModal = new LogInModal(basePage.page);
   });
 
-  test.afterEach(async ({ page }) => {
-    await page.close();
-  })
-
-  test('should allow me to log in', async ({ page }) => {
+  test('should allow me to log in', async ({ basePage }) => {
     allure.severity(Severity.Blocker);
 
-    await loginModal.fillLoginModal(login, password);
-    await loginModal.clickModalButtonByLabel('Log in');
+    const { page } = basePage;
 
-    await page.waitForSelector(basePage.userNavLink);
-
-    await expect(page.locator(basePage.userNavLink)).toHaveText(`Welcome ${login}`);
-    await expect(page.locator(basePage.loginNavLink)).toBeHidden();
-
-  });
-
-  // Failed on purpose
-  test('should not log in - form not submitted', async ({ page }) => {
-    await loginModal.fillLoginModal(login, password);
-    await loginModal.clickModalButtonByLabel('Close.');
-
-    await expect(page.locator(loginModal.modal)).toBeHidden();
-    await expect(page.locator(basePage.logoutNavLink)).toBeHidden();
-    await expect(page.locator(basePage.loginNavLink)).toBeVisible();
-  });
-
-  test('should not allow to log in - Wrong password', async ({ page }) => {
-    page.on('dialog', async dialog => {
-      await page.waitForTimeout(1000); //added cause can't check alert - browser closes (?)
-      expect(dialog.type()).toContain('alert');
-      expect(dialog.message()).toContain('Wrong password.');
+    await test.step('fill the form and submit', async () => {
+      await logInModal.fillLogInModal(userName, password);
+      await logInModal.submitLogInForm();
+      await page.waitForSelector(basePage.userNavLink);
     });
 
-    await loginModal.fillLoginModal(login, "password");
-    await loginModal.clickModalButtonByLabel('Log in');
-
-    await expect(page.locator(basePage.logoutNavLink)).toBeHidden();
+    await test.step('check succesfull login', async () => {
+      await expect(page.locator(basePage.userNavLink)).toHaveText(`Welcome ${userName}`);
+      await expect(page.locator(basePage.logInNavLink)).toBeHidden();
+    });
   });
 
-  test('should not allow to log in - Wrong login', async ({ page }) => {
-    page.on('dialog', async dialog => {
-      await page.waitForTimeout(1000); //added cause can't check alert - browser closes (?)
-      expect(dialog.type()).toContain('alert');
-      expect(dialog.message()).toContain('User does not exist.');
-      await dialog.dismiss();
+  test('should not log in if form is not submitted', async ({ basePage }) => {
+    allure.severity(Severity.Normal);
+    const { page } = basePage;
+
+    await test.step('fill the form and close it', async () => {
+      await logInModal.fillLogInModal(userName, password);
+      await logInModal.closeLogInForm();
     });
 
-    await loginModal.fillLoginModal("login", password);
-    await loginModal.clickModalButtonByLabel('Log in');
-
-    await expect(page.locator(basePage.logoutNavLink)).toBeHidden();
+    await test.step('check user is not logged in', async () => {
+      await expect(page.locator(logInModal.modal)).toBeHidden();
+      await expect(page.locator(basePage.logOutNavLink)).toBeHidden();
+      await expect(page.locator(basePage.logInNavLink)).toBeVisible();
+    });
   });
 
-  test('should not allow to log in - Empty modal', async ({ page }) => {
-    page.on('dialog', async dialog => {
-      await page.waitForTimeout(1000); //added cause can't check alert - browser closes (?)
-      expect(dialog.type()).toContain('alert');
-      expect(dialog.message()).toContain('Please fill out Username and Password.');
-      await dialog.dismiss();
+  test('should not allow to log in if password is incorrect', async ({ basePage }) => {
+    allure.severity(Severity.Blocker);
+    const { page } = basePage;
+  
+    await test.step('wait form submit and check alert', async () => {
+      page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('Wrong password.');
+        await dialog.dismiss();
+      });
     });
 
-    await loginModal.fillLoginModal("", "");
-    await loginModal.clickModalButtonByLabel('Log in');
+    await test.step('fill the form and submit', async () => {
+      await logInModal.fillLogInModal(userName, "password");
+      await logInModal.submitLogInForm();
+    });
 
-    await expect(page.locator(basePage.logoutNavLink)).toBeHidden();
+    await test.step('check that user is not logged in', async () => {
+      await expect(page.locator(basePage.logOutNavLink)).toBeHidden();
+      await expect(page.locator(basePage.logInNavLink)).toBeVisible();
+    });
+  });
+
+  test('should not allow to log in if login is incorrect', async ({ basePage }) => {
+    allure.severity(Severity.Blocker);
+    const { page } = basePage;
+  
+    await test.step('wait form submit and check alert', async () => {
+      page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('User does not exist.');
+        await dialog.dismiss();
+      });
+    });
+
+    await test.step('fill the form and submit', async () => {
+      await logInModal.fillLogInModal("login_NNN", password);
+      await logInModal.submitLogInForm();
+    });
+
+    await test.step('check that user is not logged in', async () => {
+      await expect(page.locator(basePage.logOutNavLink)).toBeHidden();
+      await expect(page.locator(basePage.logInNavLink)).toBeVisible();
+    });
+  });
+
+  test('should not allow to log in if login/pass are empty', async ({ basePage }) => {
+    allure.severity(Severity.Blocker);
+    const { page } = basePage;
+  
+    await test.step('wait form submit and check alert', async () => {
+      page.on('dialog', async dialog => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('Please fill out Username and Password.');
+        await dialog.dismiss();
+      });
+    });
+
+    await test.step('fill the form and submit', async () => {
+      await logInModal.fillLogInModal("", "");
+      await logInModal.submitLogInForm();
+    });
+
+    await test.step('check that user is not logged in', async () => {
+      await expect(page.locator(basePage.logOutNavLink)).toBeHidden();
+      await expect(page.locator(basePage.logInNavLink)).toBeVisible();
+    });
   });
 });

@@ -3,7 +3,7 @@ dotenv.config();
 
 const config = {
     baseUrl: process.env.BASE_URL,
-    login: process.env.TEST_LOGIN,
+    userName: process.env.TEST_LOGIN,
     password: process.env.TEST_PASSWORD
 }
 
