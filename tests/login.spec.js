@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import test from './framework/fixtures/baseFixture';
-import { LogInModal } from './framework/elements/LogInModal';
+import  LogInModal from './framework/elements/LogInModal';
 import { allure } from "allure-playwright";
 import config from "./framework/config";
 import { Severity } from "./framework/helpers/enums";
