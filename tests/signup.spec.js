@@ -4,7 +4,6 @@ import { test as base } from '@playwright/test';
 import { createUserData } from './framework/helpers/generators';
 import { config } from './framework/config';
 import { Severity } from './framework/helpers/enums';
-import { SignUpModal } from './framework/elements/SignUpModal';
 import { CommonPage } from './framework/pages/CommonPage';
 
 const { userName, password } = config;
@@ -38,13 +37,13 @@ test.describe('User Sign Up', () => {
       page.on('dialog', async (dialog) => {
         expect(dialog.type()).toContain('alert');
         expect(dialog.message()).toContain('Sign up successful.');
-        await dialog.dismiss();
+        // await dialog.dismiss();
       });
     });
 
     await test.step('fill the form and submit', async () => {
       await commonPage.signUp(userData.userName, userData.password);
-      await page.waitForResponse(/\/signup/);
+      // await page.waitForResponse(/\/signup/);
     });
 
     await test.step('check sign up form closed', async () => {
