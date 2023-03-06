@@ -13,7 +13,8 @@
     "pw-html-report": "npx playwright show-report",
     "report": "allure generate --clean",
     "allure-serve": "allure serve",
-    "clean": "rm -rf test-results/ allure-results/ allure-report/ playwright-report/"
+    "clean": "rm -rf test-results/ allure-results/ allure-report/ playwright-report/",
+    "format": "npx prettier --write ."
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,8 @@
     "@faker-js/faker": "^7.6.0",
     "@playwright/test": "^1.31.1",
     "allure-commandline": "^2.21.0",
-    "allure-playwright": "^2.0.0"
+    "allure-playwright": "^2.0.0",
+    "eslint": "^8.35.0",
+    "prettier": "^2.8.4"
   }
 }

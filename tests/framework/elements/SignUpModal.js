@@ -1,23 +1,22 @@
-class SignUpModal {
-    constructor(page) {
-        this.page = page;
-        this.modal = '#signInModal';
-        this.userName = '#sign-username';
-        this.password = '#sign-password';
-    };
+export class SignUpModal {
+  modal = '#signInModal';
+  userName = '#sign-username';
+  password = '#sign-password';
 
-    async fillSignUpModal(userName, password) {
-        await this.page.fill(this.userName, userName)
-        await this.page.fill(this.password, password)
-    };
+  constructor(page) {
+    this.page = page;
+  }
 
-    async submitSignUpForm() {
-        await this.page.locator(this.modal).locator(`button:text-is("Sign up")`).click();
-    };
+  async fillSignUpModal(userName, password) {
+    await this.page.fill(this.userName, userName);
+    await this.page.fill(this.password, password);
+  }
 
-    async closeSignUpForm() {
-        await this.page.locator(this.modal).locator(`button:text-is("Close")`).click();
-    };
+  async submitSignUpModal() {
+    await this.page.locator(this.modal).locator(`button:text-is("Sign up")`).click();
+  }
+
+  async closeSignUpModal() {
+    await this.page.locator(this.modal).locator(`button:text-is("Close")`).click();
+  }
 }
-
-export default SignUpModal

@@ -1,23 +1,23 @@
-class LogInModal {
-    
-    constructor(page) {
-        this.page = page;
-        this.modal = '#logInModal';
-        this.userName = '#loginusername';
-        this.password = '#loginpassword';
-    };
+export class LogInModal {
+  modal = '#logInModal';
+  userName = '#loginusername';
+  password = '#loginpassword';
+  page;
 
-    async fillLogInModal(userName, password) {
-        await this.page.fill(this.userName, userName)
-        await this.page.fill(this.password, password)
-    };
+  constructor(page) {
+    this.page = page;
+  }
 
-    async submitLogInForm() {
-        await this.page.locator(this.modal).locator(`button:text-is("Log in")`).click();
-    };
+  async fillLogInModal(userName, password) {
+    await this.page.fill(this.userName, userName);
+    await this.page.fill(this.password, password);
+  }
 
-    async closeLogInForm() {
-        await this.page.locator(this.modal).locator(`button:text-is("Close")`).click();
-    };
+  async submitLogInModal() {
+    await this.page.locator(this.modal).locator(`button:text-is("Log in")`).click();
+  }
+
+  async closeLogInModal() {
+    await this.page.locator(this.modal).locator(`button:text-is("Close")`).click();
+  }
 }
-export default LogInModal
