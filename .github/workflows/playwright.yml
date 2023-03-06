@@ -50,8 +50,18 @@ jobs:
           folder: playwright-report
           clean: true
           token: ${{ secrets.TOKEN }}
-          target-folder: reports
+          target-folder: reports/playwright-report
         continue-on-error: true
+      
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: allure-report
+          clean: true
+          token: ${{ secrets.TOKEN }}
+          target-folder: reports/allure-report
+        continue-on-error: true
+
 
       - name: Send telegram notification
         uses: appleboy/telegram-action@master
