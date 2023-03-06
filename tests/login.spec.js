@@ -12,7 +12,6 @@ const test = base.extend({
     const commonPage = new CommonPage(page);
     await commonPage.navigate();
     await use(commonPage);
-    await context.close();
   },
 });
 

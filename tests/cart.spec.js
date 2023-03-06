@@ -16,7 +16,6 @@ const test = base.extend({
     const mainPage = new MainPage(page);
     await mainPage.navigate();
     await use(mainPage);
-    await context.close();
   },
   commonPage: async ({ page }, use) => {
     const commonPage = new CommonPage(page);

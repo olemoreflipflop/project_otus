@@ -13,7 +13,6 @@ const test = base.extend({
     const commonPage = new CommonPage(page);
     await commonPage.navigate();
     await use(commonPage);
-    await context.close();
   },
 });
 
@@ -37,13 +36,13 @@ test.describe('User Sign Up', () => {
       page.on('dialog', async (dialog) => {
         expect(dialog.type()).toContain('alert');
         expect(dialog.message()).toContain('Sign up successful.');
-        // await dialog.dismiss();
+        await dialog.dismiss();
       });
     });
 
     await test.step('fill the form and submit', async () => {
       await commonPage.signUp(userData.userName, userData.password);
-      // await page.waitForResponse(/\/signup/);
+      await page.waitForTimeout(100);
     });
 
     await test.step('check sign up form closed', async () => {
