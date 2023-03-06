@@ -50,6 +50,7 @@ jobs:
           folder: playwright-report
           clean: true
           token: ${{ secrets.TOKEN }}
+          target-folder: reports
         continue-on-error: true
 
       - name: Send telegram notification
