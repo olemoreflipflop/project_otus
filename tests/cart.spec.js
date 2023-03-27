@@ -181,4 +181,36 @@ test.describe('Product Cart', () => {
       await expect(page.locator('div.sweet-alert > p.lead')).toContainText(`Amount: ${total} USD`);
     });
   });
+
+  test('should not allow to order without Name and Card', async ({ mainPage }) => {
+    allure.severity(Severity.Critical);
+
+    const { page } = mainPage;
+    const productPage = new ProductPage(page);
+    const cartPage = new CartPage(page);
+
+    await test.step('preparation - add product to cart', async () => {
+      await productPage.navigate(1);
+      await page.waitForSelector('#myTabContent');
+      await productPage.addProductToCart();
+    });
+
+    await test.step('go to cart page and click place order', async () => {
+      await page.locator('.nav-link:has-text("Cart")').click();
+      await page.waitForSelector('#tbodyid');
+      await cartPage.openPlaceOrderModal();
+    });
+
+    await test.step('wait empty form submit and check alert', async () => {
+      page.on('dialog', async (dialog) => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('Please fill out Name and Creditcard.');
+        await dialog.dismiss();
+      });
+    });
+
+    await test.step('Submit empty order form', async () => {
+      await cartPage.placeOrderModal.submitPlaceOrderModal();
+    });
+  });
 });

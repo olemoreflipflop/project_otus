@@ -9,9 +9,11 @@ export class ProductPage {
 
   async navigate(productId) {
     await this.page.goto(`${baseUrl}/prod.html?idp_=${productId}`);
+    return this.page;
   }
 
   async addProductToCart() {
     await this.page.locator(this.addToCartButton).click();
+    return this.page;
   }
 }

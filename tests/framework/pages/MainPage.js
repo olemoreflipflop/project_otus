@@ -1,5 +1,8 @@
 import { config } from '../config';
+import { PRODUCT_LIST } from '../helpers/mock_data';
+import { expect } from '@playwright/test';
 const { baseUrl } = config;
+
 export class MainPage {
   productsCarousel = '#contcar';
   productsList = '#tbodyid';
@@ -27,5 +30,27 @@ export class MainPage {
       productCheck = await product.isVisible();
     }
     return product;
+  }
+
+  async applyProductsFilter(category) {
+    await this.page.waitForSelector('.list-group');
+    let productCategory = await this.page.locator(`#itemc:has-text("${category}")`);
+    await productCategory.click();
+    await this.page.waitForSelector('.card-block');
+  }
+
+  async checkProductsNumberOnPage(num) {
+    await this.page.waitForSelector('#tbodyid');
+    await expect(this.page.locator('.card-block')).toHaveCount(num);
+  }
+
+  // doesnt work for some reason - ?
+  async mockProductList() {
+    await this.page.route(/\/entries/, async (route) => {
+      await route.fulfill({
+        status: 200,
+        body: JSON.stringify(PRODUCT_LIST),
+      });
+    });
   }
 }

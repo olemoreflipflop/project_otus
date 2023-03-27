@@ -2,5 +2,5 @@ node_modules
 /*-results/
 /*-report/
 /playwright/.cache/
-.env*
+.env
 results.xml
