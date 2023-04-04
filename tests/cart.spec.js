@@ -31,7 +31,7 @@ test.describe('Product Cart', () => {
   });
 
   //flaky one - sometimes fails and do not add product. (site bug)
-  test.fixme('should allow me to add product to cart', async ({ mainPage }) => {
+  test('should allow me to add product to cart', async ({ mainPage }) => {
     allure.severity(Severity.Critical);
     const { page } = mainPage;
     const productPage = new ProductPage(page);
@@ -61,13 +61,14 @@ test.describe('Product Cart', () => {
     });
   });
 
-  test('should allow me to add and delete product to/from cart', async ({ mainPage }) => {
+  test('should allow me to delete product from cart', async ({ mainPage }) => {
     allure.severity(Severity.Critical);
 
     const { page } = mainPage;
     const productPage = new ProductPage(page);
     const cartPage = new CartPage(page);
 
+    // TODO: add product to cart using API instead of UI
     await test.step('preparation - add product to cart', async () => {
       await productPage.navigate(1);
       await productPage.addProductToCart();

@@ -68,7 +68,7 @@ test.describe('User Sign Up', () => {
     });
   });
 
-  test('should not allow to sign up if login/pass are empty', async ({ commonPage }) => {
+  test('should not allow to sign up if login&pass are empty', async ({ commonPage }) => {
     allure.severity(Severity.Blocker);
 
     const { page } = commonPage;
@@ -83,6 +83,42 @@ test.describe('User Sign Up', () => {
 
     await test.step('fill the form and submit', async () => {
       await commonPage.signUp('', '');
+    });
+  });
+
+  test('should not allow to sign up if login are empty', async ({ commonPage }) => {
+    allure.severity(Severity.Blocker);
+
+    const { page } = commonPage;
+
+    await test.step('wait form submit and check alert', async () => {
+      page.on('dialog', async (dialog) => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('Please fill out Username and Password.');
+        await dialog.dismiss();
+      });
+    });
+
+    await test.step('fill the form and submit', async () => {
+      await commonPage.signUp('', userData.password);
+    });
+  });
+
+  test('should not allow to sign up if password are empty', async ({ commonPage }) => {
+    allure.severity(Severity.Blocker);
+
+    const { page } = commonPage;
+
+    await test.step('wait form submit and check alert', async () => {
+      page.on('dialog', async (dialog) => {
+        expect(dialog.type()).toContain('alert');
+        expect(dialog.message()).toContain('Please fill out Username and Password.');
+        await dialog.dismiss();
+      });
+    });
+
+    await test.step('fill the form and submit', async () => {
+      await commonPage.signUp(userData.userName, '');
     });
   });
 });
