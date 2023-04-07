@@ -24,8 +24,7 @@ export class MainPage {
     let productCheck = await product.isVisible();
     while (!productCheck) {
       await this.page.locator(this.nextButton).click();
-      await this.page.waitForTimeout(500); // TODO: find how to replace this timeout
-      await this.page.waitForSelector('#tbodyid');
+      await this.page.waitForResponse(/pagination/);
       product = await this.page.locator(`.card-title:has-text("${name}")`);
       productCheck = await product.isVisible();
     }

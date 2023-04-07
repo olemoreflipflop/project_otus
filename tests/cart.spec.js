@@ -134,7 +134,7 @@ test.describe('Product Cart', () => {
     });
 
     await test.step('Fill required fields', async () => {
-      await cartPage.placeOrderModal.fillOrderModal(orderInfo.name, orderInfo.creditCard);
+      await cartPage.placeOrderModal.fillOrderModal({ name: orderInfo.name, creditCard: orderInfo.creditCard });
       await cartPage.placeOrderModal.submitPlaceOrderModal();
     });
 
@@ -172,7 +172,7 @@ test.describe('Product Cart', () => {
     });
 
     await test.step('Fill required fields', async () => {
-      await cartPage.placeOrderModal.fillOrderModal(orderInfo.name, orderInfo.creditCard);
+      await cartPage.placeOrderModal.fillOrderModal({ name: orderInfo.name, creditCard: orderInfo.creditCard });
       await cartPage.placeOrderModal.submitPlaceOrderModal();
     });
 

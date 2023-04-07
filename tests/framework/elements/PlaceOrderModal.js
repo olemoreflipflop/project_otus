@@ -11,7 +11,7 @@ export class PlaceOrderModal {
     this.page = page;
   }
 
-  async fillOrderModal(name, creditCard, _country, _city, _month, _year) {
+  async fillOrderModal({ name, creditCard, _country, _city, _month, _year }) {
     await this.page.fill(this.name, name);
     await this.page.fill(this.creditCard, creditCard);
     if (_country) {
